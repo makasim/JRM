@@ -1,0 +1,57 @@
+Javascript Remote Mapper
+
+Php workflow:
+
+1) Set objects mapping:
+
+JRM::setMap(array('User' => 'app.model.User'));
+
+2) Add interafce and implement interface IJRMSerializable:
+
+class User implements IJRMSerializable   
+{
+  /**
+   * @return array
+   */
+  public function getJrmProperties()
+  {
+    return array(
+      'name' => $this->_name,
+      'id' => $this->_id,
+      'email' => $this->_email);
+  }
+
+  /**
+   *
+   * @param array $array
+   * @return bool
+   */
+  public function setJrmProperties($array)
+  {
+    $this->_name = $array['name'];
+    $this->_id = $array['id'];
+    $this->_email = $array['email'];
+    
+    return true;
+  }
+
+3) Send data to the client:
+
+json_encode(JRM::serialize($widget))
+
+Javascript workflow:
+
+
+1) Create a User (JS.Class lib is needed):
+
+user = new Class(Model, {
+  id : '',
+
+  name : '',
+
+  email : ''
+});
+
+2) Unserialize response data: 
+
+user = JRM.unserialize(data); 
